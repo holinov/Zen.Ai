@@ -2,7 +2,6 @@
 #include "stdafx.h"
 #include "character.hpp"
 #include "item.hpp"
-#include "world.hpp"
 
 namespace Zen{
 	namespace AI{
@@ -18,8 +17,9 @@ namespace Zen{
 			int _x;
 			int _y;
 			std::vector<Character*> _characters;
-			std::vector<Item> _resources;
+			std::vector<InventoryItem> _resources;
 			World* _world;
+			Inventroy _inventory;
 
 		public:
 			Location(int x, int y, World* w)
@@ -28,14 +28,31 @@ namespace Zen{
 				, _characters()
 				, _resources()
 				, _world(w)
+				, _inventory()
 			{};
+
+			
+			Inventroy& inventory() const{
+				return &_inventory;
+			}
 		};
 
 		class World {
 		private:
 			std::vector<std::vector<Location*>> _locations;
+			std::vector<Character*> _characters;
+
+			void generateCharacters(unsigned chars){
+				for(unsigned i = 0; i < chars; ++i) {
+					/* code */
+				}
+			}
+
 		public:
-			World(){};
+			World() 
+				: _locations()
+				, _characters()
+			{};
 			void generateWorld(unsigned maxX, unsigned maxY, unsigned chars){
 				std::vector<std::vector<Location*>> locs(maxY);
 				//Сгенерировать локации

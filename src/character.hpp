@@ -25,19 +25,17 @@ namespace Zen{
 					/**
 					 * @brief Общий уровень опыта
 					 */
-					int TotalExp;
+					static const std::string TotalExp = "Common.TotalExp";
 
 					/**
 					 * @brief Уровень счастья
 					 */
-					int Happines;
+					static const std::string Happines = "Common.Happines";
 
 					/**
 					 * @brief Богатство
 					 */
-					int Wealth;
-
-					Common():TotalExp(0),Happines(0),Wealth(0) {}
+					static const std::string Wealth = "Common.Wealth";
 				};
 
 				/**
@@ -48,19 +46,17 @@ namespace Zen{
 					 * @brief Энергия (расходуется на выполнение действий)
 					 * @details При достижении 0 существо засыпает (выбирается умение восстанавливающее наибольшее кол-во энергии)
 					 */
-					int Energy;
+					static const std::string Energy ="Survival.Energy";
 
 					/**
 					 * @brief Голод (при достижении 0 существо умирает)
 					 */
-					int Food;
+					static const std::string Food = "Survival.Food";
 
 					/**
 					 * @brief Жажда (при достижении 0 существо умирает)
 					 */
-					int Water;
-
-					Survival():Energy(0),Food(0),Water(0) {}
+					static const std::string Water = "Survival.Water";
 				};
 
 				/**
@@ -71,33 +67,14 @@ namespace Zen{
 					/**
 					 * @brief Влиятельность]
 					 */
-					int Influence;
+					static const std::string Influence = "Social.Influence";
 
 					/**
 					 * @brief Привлекательность
 					 * @details Используется для выбора партнера для размножения
 					 */
-					int Attractivnes;
-
-					Social():Influence(0),Attractivnes(0) {}
+					static const std::string Attractivnes = "Social.Attractivnes";
 				};
-
-				/**
-				 * @brief Общие характеристики
-				 */
-				Common Common;
-
-				/**
-				 * @brief Характеристики выживания
-				 */
-				Survival Survival;
-
-				/**
-				 * @brief Социальные характеристики
-				 */
-				Social Social;
-
-				Stats(): Common(),Survival(),Social() {}
 			};
 			static IdType curId;
 
@@ -105,7 +82,8 @@ namespace Zen{
 			std::vector<WishInfo> _wishes;
 			std::vector<AddictionInfo> _addictions;
 			std::map<IdType,Skill> _skills;
-			std::map<IdType,Item> _items;
+			std::map<std::string,int> _stats;
+			Inventroy _inventroy;
 
 		public:
 
@@ -124,7 +102,22 @@ namespace Zen{
 			 */
 			Stats Stats;
 
-			Character(): Stats() {
+			Character()
+				: Stats() 
+				, _wishes()
+				, _addictions()
+				, _skills()
+				, _stats({ 	{Stats::Common::Attractivnes, 100} 
+							,{Stats::Common::Influence, 100}
+							,{Stats::Survival::Energy, 100}
+							,{Stats::Survival::Food, 100}
+							,{Stats::Survival::Water, 100}
+							,{Stats::Common::TotalExp, 0}
+							,{Stats::Common::Happines, 100}
+							,{Stats::Common::Wealth, 0}
+							});
+				, _inventroy()
+			{
 				id(++curId);
 			};
 
@@ -136,6 +129,10 @@ namespace Zen{
 			 */
 			inline void modifyWish(IdType wishId, int modifyLvl){
 				_wishes[wishId].addWishLvl(wishId,modifyLvl);
+			}
+
+			Inventroy& inventory() const{
+				return &inventory;
 			}
 		};
 	}

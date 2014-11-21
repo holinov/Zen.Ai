@@ -22,28 +22,6 @@ namespace Zen{
 			 */
 			Character* actor(){ return _actor; }
 
-			/**
-			 * @brief Достаточно ли ресурсов
-			 * 
-			 * @param resourceId ИД ресурса
-			 * @param count необходимое кол-во ресурса
-			 * 
-			 * @return true если достаточно
-			 */
-			inline const bool isEnougthResources(IdType resourceId, int count){
-				return _actor->getResourceCount(resourceId) >= count;
-			}
-
-			/**
-			 * @brief Изменить уровень желания
-			 * 
-			 * @param wishId ИД желания
-			 * @param modifyLvl ировень изменения
-			 */
-			inline void modifyWish(IdType wishId, int modifyLvl){
-				_actor->modifyWish(wishId, modifyLvl);
-			}
-
 		};
 
 		/**
