@@ -21,7 +21,7 @@ namespace Zen
                 bool ConsumeStep::applyToContext(Context *ctx, StepContext *stepCtx)
                 {
                     //Взять ресурс из природы
-                    Inventroy *inv = ctx->actorInfo().actor()->inventory();
+                    Inventory *inv = ctx->actorInfo().actor()->inventory();
 
                     if (_useContext)
                     {
@@ -44,7 +44,7 @@ namespace Zen
                 bool LootStep::applyToContext(Context *ctx, StepContext *stepCtx)
                 {
                     //Взять ресурс из природы
-                    Inventroy *inv = ctx->actorInfo().actor()->inventory();
+                    Inventory *inv = ctx->actorInfo().actor()->inventory();
 
                     if (_useContext)
                     {

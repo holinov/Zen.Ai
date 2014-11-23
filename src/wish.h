@@ -16,7 +16,19 @@ namespace Zen{
 			Wish(IdType id, std::string name) 
 				: HasId(id)
 				, HasName(name)
+				, _histroy()
 			{};
+
+			Wish()
+				: Wish(0,"")
+			{};
+
+			Wish(Wish& o)
+				: _histroy(o._histroy)
+			{	
+				id(o.id());
+				name(o.name());
+			};
 		};
 
 		/**
@@ -31,11 +43,12 @@ namespace Zen{
 				:_wishId(wishId)
 				,_wishLevel(wishLevel)
 			{};
+			WishInfo(): WishInfo(0,0) {}
 
 			inline const IdType wishId(){ return _wishId; }
 			inline void wishId(IdType id) { _wishId=id; }
 
-			inline const int wishLvl() { return _wishId; }
+			inline const int wishLvl() { return _wishLevel; }
 			inline void wishLvl(int lvl){ _wishLevel = lvl; }
 			inline void addWishLvl(int lvl){ _wishLevel += lvl; }
 		};

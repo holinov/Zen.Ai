@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "log.h"
 
 #ifdef WIN_PATH
 	const char cPathSeparator = '\\';
@@ -19,7 +20,7 @@ private:
 public:
 	HasId() {};
 	HasId(IdType id): _id(id) {};
-	inline IdType const id() { return _id; }
+	inline IdType id() { return _id; }
 	inline void id(IdType id) { _id=id; }
 };
 
@@ -29,6 +30,6 @@ private:
 public:
 	HasName() {};
 	HasName(std::string name): _name(name) {};
-	inline std::string const name() { return _name; }
+	inline std::string name() { return _name; }
 	inline void name(std::string name) { _name=name; }
 };

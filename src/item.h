@@ -29,7 +29,7 @@ namespace Zen{
 			{};
 
 			InventoryItem(const InventoryItem& o) 
-				: InventoryItem(o._typeId,o._count)
+				: InventoryItem(o.type(),o.count())
 			{}
 
 			InventoryItem() : _typeId(), _count() {}

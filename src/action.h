@@ -52,6 +52,7 @@ namespace Zen{
                 , _actionCost(cost)
                 , _affectedWishes(affectedWishes)
             {};
+            virtual ~Action() {}
 
             /**
              * @brief Стоимость действия

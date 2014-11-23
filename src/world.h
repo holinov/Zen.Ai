@@ -18,7 +18,7 @@ namespace Zen{
 			int _y;
 			std::vector<Character*> _characters;
 			World* _world;
-			Inventroy* _inventory;
+			Inventory* _inventory;
 
 		public:
 			Location(int x, int y, World* w)
@@ -27,7 +27,7 @@ namespace Zen{
 				, _characters()
 				, _world(w)
 			{
-				_inventory = new Inventroy();
+				_inventory = new Inventory();
 			};
 
 			~Location(){
@@ -35,7 +35,7 @@ namespace Zen{
 			}
 
 			
-			inline Inventroy* inventory(){
+			inline Inventory* inventory(){
 				return _inventory;
 			}
 
@@ -49,37 +49,14 @@ namespace Zen{
 			std::vector<std::vector<Location*>> _locations;
 			std::vector<Character*> _characters;
 
-			void generateCharacters(unsigned chars){
-				WishManager mgr;
-				for(unsigned i = 0; i < chars; ++i) {
-					/* code */
-				}
-			}
+			void generateCharacters(unsigned chars);
 
 		public:
 			World() 
 				: _locations()
 				, _characters()
 			{};
-			void generateWorld(unsigned maxX, unsigned maxY, unsigned chars){
-				//std::vector<std::vector<Location*>> locs(maxX);
-				//Сгенерировать локации
-				for(unsigned x = 0; x < maxX; ++x) {
-					std::vector<Location*> row(maxY);
-					for(unsigned y = 0; y < maxY; ++y) {
-						Location* l= new Location(x,y,this);
-						row.push_back(l);
-
-						//Сгенерировать стартовые ресурсы локации
-						#warning TODO: generate resources
-						//l->generateResources();
-					}
-					_locations.push_back(row);
-				}
-
-				//Сгенерировать персонажей
-				#warning TODO: generate characters
-			}
+			void generateWorld(unsigned maxX, unsigned maxY, unsigned chars);
 
 			~World(){
 				for(auto&& row : _locations) {

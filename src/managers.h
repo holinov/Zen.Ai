@@ -5,8 +5,6 @@
 #include "wish.h"
 #include "item.h"
 
-
-
 namespace Zen
 {
     namespace AI
@@ -16,10 +14,8 @@ namespace Zen
         	
         public:
         	ItemManager() = default;
-        	virtual void LoadActions(){
-            	Item *i=new Food();
-                set(i->id(),i);
-            }
+            virtual ~ItemManager(){};
+        	virtual void LoadActions();
         };
 
         class WishManager: public Manager<IdType, Wish>
@@ -29,37 +25,16 @@ namespace Zen
         public:
             WishManager(/* args */) = default;
             virtual ~WishManager() {}
-        protected:
-            virtual void LoadActions()
-            {
-                IdType i = 0;
-
-                Wish *w1 = new Wish(i, "To eat");
-                set(i, w1);
-
-                Wish *w2 = new Wish(++i, "To sleep");
-                set(i, w2);
-            }
+            virtual void LoadActions();
         };
 
-        /*class ActionManager: public Manager<IdType, Action>
+        class ActionManager: public Manager<IdType, Action>
         {
         private:
         public:
             ActionManager() = default;
-            virtual ~ActionManager()
-            {};
-        protected:
-            virtual void LoadActions()
-            {
-                IdType i = 0;
-
-                Action *a1 = new Action(i, "Eat raw", {0, 10});
-                set(i, a1);
-
-                Action *a2 = new Action(++i, "Sit", {1, 15});
-                set(i, a2);
-            }
-        };*/
+            virtual ~ActionManager(){};
+            virtual void LoadActions();
+        };
     }
 }

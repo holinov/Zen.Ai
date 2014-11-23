@@ -81,15 +81,17 @@ namespace Zen{
 			static IdType curId;
 
 		private:
-			std::vector<WishInfo> _wishes;
-			std::vector<AddictionInfo> _addictions;
-			std::map<IdType,Skill> _skills;
-			std::map<std::string,int> _stats;
-			Inventroy* _inventroy;
+			std::map<IdType, WishInfo> _wishes;
+			std::map<IdType, AddictionInfo> _addictions;
+			std::map<IdType, Skill> _skills;
+			std::map<std::string, int> _stats;
+			Inventory* _Inventory;
 
 		public:
 
-			void makeAction();
+			void makeAction(){
+				//throw 
+			};
 
 			/**
 			 * @brief Получить кол-во заданного ресурса в интвентаре
@@ -120,11 +122,11 @@ namespace Zen{
 							})				
 			{
 				id(++curId);
-				_inventroy=new Inventroy();
+				_Inventory=new Inventory();
 			};
 
 			~Character(){
-				delete _inventroy;
+				delete _Inventory;
 			}
 
 			/**
@@ -134,11 +136,15 @@ namespace Zen{
 			 * @param modifyLvl Уровень изменения желания
 			 */
 			inline void modifyWish(IdType wishId, int modifyLvl){
+				auto it = _wishes.find(wishId);
+				if(it == _wishes.end())
+					_wishes[wishId] = WishInfo(wishId,0);
+
 				_wishes[wishId].addWishLvl(modifyLvl);
 			}
 
-			inline Inventroy* inventory(){
-				return _inventroy;
+			inline Inventory* inventory(){
+				return _Inventory;
 			}
 
 			int stat(std::string stat){
@@ -147,6 +153,14 @@ namespace Zen{
 
 			void stat(std::string stat, uint val){
 				_stats[stat] = val;
+			}
+
+			std::vector<WishInfo> wishes(){
+				std::vector<WishInfo> res;
+				for(auto&& i : _wishes) {
+					res.push_back(i.second);
+				}
+				return res;
 			}
 		};
 	}

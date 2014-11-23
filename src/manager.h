@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "log.h"
 
 namespace Zen
 {
@@ -92,8 +93,8 @@ namespace Zen
 
             std::vector<KeyType> getAllIds(){
             	std::vector<KeyType> res;
-            	for(auto&& _cnt : _counts) {
-            		res.push_back(_cnt.first);
+                for(auto&& cnt : _counts) {
+                    res.push_back(cnt.first);
             	}
             	return res;
             }
@@ -106,14 +107,21 @@ namespace Zen
                 }
             }
 
-        protected:
+            std::vector<ItemType*> getAll(){
+                std::vector<ItemType*> res;
+                for(auto&& it : _cache) {
+                    res.push_back(it.second);
+                }
+                return res;
+            }
+        
             virtual void LoadActions()
             {
             	for(auto&& i : loadItems()) {
             		set(i->id(),i);
             	}
             }
-
+protected:
             std::vector<ItemType*> loadItems(){
             	return std::vector<ItemType*>();
             }

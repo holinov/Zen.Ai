@@ -1,4 +1,5 @@
 #pragma once
+#include "context.h"
 #include "action_steps.h"
 
 namespace Zen
@@ -159,7 +160,7 @@ namespace Zen
                 class CollectFoodAction : public StepsAction
                 {
                 public:
-                    CollectFoodAction() : StepsAction(0, "Collect food", 2, {{0, 10}})
+                    CollectFoodAction() : StepsAction(1, "Collect food", 2, {{0, 10}})
                     {
                         _steps.push_back(new FindBestResourceOfTypeStep(ResourceTypes::FOOD));
                         _steps.push_back(new LootStep());

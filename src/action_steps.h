@@ -57,6 +57,8 @@ namespace Zen
                  * @return true если шаг возможно исполнить
                  */
                 virtual bool isApplyable(Context *ctx, StepContext *stepCtx) = 0;
+
+                virtual ~ActionStep() {}
             };
 
 
