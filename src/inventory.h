@@ -1,85 +1,19 @@
 #pragma once
 #include "stdafx.h"
-#include "manager.hpp"
+#include "item.h"
 
 namespace Zen{
 	namespace AI{
-
-		/**
-		 * @brief Предмет
-		 */
-		class Item : public HasId, public HasName{
-		protected:
-			Item(IdType id, std::string name) 
-				: HasId(id)
-				, HasName(name)
-			{};
-		public:
-			virtual ~Item(){}
-		};
-
-		class InventoryItem {
-		private:
-			IdType _typeId;
-			unsigned int _count;
-		public:
-			InventoryItem(IdType type, unsigned int count)
-				: _typeId(type)
-				, count(count)
-			{};
-
-			InventoryItem(const InventoryItem& o) 
-				: InventoryItem(o._typeId,o._count)
-			{}
-
-			inline IdType type() const{
-				return _typeId;
-			}
-
-			inline unsigned int count() const{
-				return _count;
-			}
-
-			inline void count(unsigned int cnt){
-				_count=cnt;
-			}
-		};
-
-		
-
-		struct ResourceTypes {
-			static const std::string FOOD;
-			static const std::string MINERAL;
-			static const std::string WOOD;
-		};
-		
-		class Resource : public Item {
-		private:
-			std::string _type;
-			unsigned int _resouceValue;
-		protected:
-			Resource(IdType id, std::string name,std::string type,unsigned int resouceValue)
-				: Item(id,name)
-				, _type(type)
-				, _resouceValue(resouceValue)
-			{}
-		public:
-			virtual ~Resource(){}
-			unsigned long value() const{
-				return _resouceValue;
-			}
-		};
-
 		/**
 		 * @brief Инвентрарь (класс для работы с коллекциями предметов)
 		 */
 		class Inventroy {
 		private:
-			std::map<ItemType, InventoryItem> _items;
+			std::map<IdType, InventoryItem> _items;
 		public:
 			Inventroy()
-				: _items
-			{};
+				: _items()
+			{}
 
 			/**
 			 * @brief Наличие предмета заданного типа
@@ -87,12 +21,13 @@ namespace Zen{
 			 * @param id ИД типа
 			 * @return true если есть
 			 */
-			bool hasItemTypeId(IdType id) const{
-				auto it = _items.find(id);
-				return it != _items.end();
+			bool hasItemTypeId (IdType id){
+				auto it = this->_items.find(id);
+				bool res = it != this->_items.end();
+				return res;
 			}
 
-			uint resAmmount(IdType id) const{
+			uint resAmmount(IdType id){
 				if(hasItemTypeId(id)){
 					return _items[id].count();
 				}else{
@@ -107,7 +42,7 @@ namespace Zen{
 			 * @param count Необходимое количество
 			 * @return true если есть
 			 */
-			bool hasItemTypeId(IdType id, uint count) const{
+			bool hasItemTypeId(IdType id, uint count){
 				auto it = _items.find(id);
 				return it != _items.end() && _items[id].count() >= count;
 			}
@@ -129,7 +64,8 @@ namespace Zen{
 			 * @param int количество предметов
 			 */
 			inline void add(IdType itemType, unsigned int count){
-				add(InventoryItem(itemType,count));
+				auto item=InventoryItem(itemType,count);
+				add(item);
 			}
 
 			/**
@@ -167,7 +103,10 @@ namespace Zen{
 			 * @param item Предметы
 			 */
 			void moveToInventory(Inventroy* target,InventoryItem& item){
-				if(hasItemTypeId(item.id() && _items[item.id()] >= item.count()){
+				if(
+					hasItemTypeId(item.type()) 
+					&& _items[item.type()].count() >= item.count() 
+				){
 					take(item);
 					target->add(item);
 				}
@@ -180,18 +119,18 @@ namespace Zen{
 			 * @return true если есть хотя-бы один ресурс заданного типа
 			 */
 			bool hasResourceOfType(std::string type) const{
-				ItemManager itemManager;
+				Manager<IdType, Item> itemManager;
 				bool has = false;
 				for(auto&& invItem : _items) {
-					Item* item = itemManager.get(invItem.type());
+					Item* item = itemManager.get(invItem.second.type());
 					Resource* res = dynamic_cast<Resource*>(item);
-					if(res != nullptr && res.type() == type){
+					if(res != nullptr && res->type() == type){
 						has = true;
 						break;
 					}
 				}
 
-				return res;
+				return has;
 			}
 
 			/**
@@ -212,27 +151,22 @@ namespace Zen{
 			 * @return Список ресурсов заданного типа
 			 */	
 			std::vector<InventoryItem> getResourcesOfType(std::string type, unsigned int count){
-				ItemManager itemManager;
+				Manager<IdType, Item> itemManager;
 				std::vector<InventoryItem> resources;
 				for(auto&& invItem : _items) {
-					Item* item = itemManager.get(invItem->type());
+					Item* item = itemManager.get(invItem.second.type());
 					Resource* res = dynamic_cast<Resource*>(item);
-					if(res != nullptr && res.type() == type && res.count() => count){
-						resources.push_back(*item);
+					if(res != nullptr && res->type() == type && invItem.second.count() >= count){
+						resources.push_back(invItem.second);
 					}
 				}
 
 				return resources;
 			}
-		};
 
-		class Food : Resource {
-		public:
-			Food()
-				:Resource(0,"Raw food (berries)",ResourceTypes::FOOD,1)
-			{}
-
-			virtual ~Food(){}
+			inline uint getResourceCount(IdType type){
+				return resAmmount(type);			
+			}
 		};
 	}
 }

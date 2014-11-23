@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "wish.h"
 
 namespace Zen{
 	namespace AI{
@@ -8,19 +9,21 @@ namespace Zen{
 		 */
 		class Addiction : public HasId, public HasName{
 		private:
-
+			IdType _wishId;
 		public:
-			Addiction(IdType id, std::string name) 
+			Addiction(IdType id, std::string name, IdType wishId) 
 				: HasId(id)
 				, HasName(name)
 			{};
+
+			inline IdType wishId() { return id(); }
 		};
 
 		/**
 		 * @brief Информация о склонности существа
 		 */
 		class AddictionInfo {
-		/*private:
+		private:
 			IdType _wishId;
 			int _wishLevel;
 		public:
@@ -29,12 +32,29 @@ namespace Zen{
 				,_wishLevel(wishLevel)
 			{};
 
+			AddictionInfo(Wish* w, int wishLevel)
+				:AddictionInfo(w->id(),wishLevel)
+			{}
+
+			/**
+			 * @brief ИД желания склонности
+			 */
 			inline const IdType wishId(){ return _wishId; }
+			
+			/**
+			 * @brief ИД желания склонности
+			 */
 			inline void wishId(IdType id) { _wishId=id; }
 
+			/**
+			 * @brief Силя влияния на желание
+			 */
 			inline const int wishLvl() { return _wishId; }
-			inline void wishLvl(int lvl){ _wishLevel = lvl; }
-			inline void addWishLvl(int lvl){ _wishLevel += lvl; }*/
+			
+			/**
+			 * @brief Силя влияния на желание
+			 */
+			inline void wishLvl(int lvl){ _wishLevel = lvl; }			
 		};
 	}
 }

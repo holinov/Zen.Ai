@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(ZenAiCore)
 
-file(GLOB SourceFiles "*.cpp" "*.h" "*.hpp")
+file(GLOB SourceFiles "*.cpp" "*.h" "*.h")
 add_executable(zenai ${SourceFiles})
 
 #Передать наверх для прповерки

@@ -1,8 +1,7 @@
 #pragma once
 #include "stdafx.h"
-#include "character.hpp"
-#include "item.hpp"
-#include "world.hpp"
+#include "character.h"
+#include "world.h"
 
 namespace Zen{
 	namespace AI{

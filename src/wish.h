@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "skill.h"
 
 namespace Zen{
 	namespace AI{

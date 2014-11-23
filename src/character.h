@@ -1,6 +1,8 @@
 #pragma once
 #include "stdafx.h"
-#include "item.hpp"
+#include "inventory.h"
+#include "skill.h"
+#include "addiction.h"
 
 namespace Zen{
 	namespace AI{
@@ -25,17 +27,17 @@ namespace Zen{
 					/**
 					 * @brief Общий уровень опыта
 					 */
-					static const std::string TotalExp = "Common.TotalExp";
+					static const std::string TotalExp;
 
 					/**
 					 * @brief Уровень счастья
 					 */
-					static const std::string Happines = "Common.Happines";
+					static const std::string Happines;
 
 					/**
 					 * @brief Богатство
 					 */
-					static const std::string Wealth = "Common.Wealth";
+					static const std::string Wealth;
 				};
 
 				/**
@@ -46,17 +48,17 @@ namespace Zen{
 					 * @brief Энергия (расходуется на выполнение действий)
 					 * @details При достижении 0 существо засыпает (выбирается умение восстанавливающее наибольшее кол-во энергии)
 					 */
-					static const std::string Energy ="Survival.Energy";
+					static const std::string Energy;
 
 					/**
 					 * @brief Голод (при достижении 0 существо умирает)
 					 */
-					static const std::string Food = "Survival.Food";
+					static const std::string Food;
 
 					/**
 					 * @brief Жажда (при достижении 0 существо умирает)
 					 */
-					static const std::string Water = "Survival.Water";
+					static const std::string Water;
 				};
 
 				/**
@@ -67,13 +69,13 @@ namespace Zen{
 					/**
 					 * @brief Влиятельность]
 					 */
-					static const std::string Influence = "Social.Influence";
+					static const std::string Influence;
 
 					/**
 					 * @brief Привлекательность
 					 * @details Используется для выбора партнера для размножения
 					 */
-					static const std::string Attractivnes = "Social.Attractivnes";
+					static const std::string Attractivnes;
 				};
 			};
 			static IdType curId;
@@ -83,7 +85,7 @@ namespace Zen{
 			std::vector<AddictionInfo> _addictions;
 			std::map<IdType,Skill> _skills;
 			std::map<std::string,int> _stats;
-			Inventroy _inventroy;
+			Inventroy* _inventroy;
 
 		public:
 
@@ -107,19 +109,23 @@ namespace Zen{
 				, _wishes()
 				, _addictions()
 				, _skills()
-				, _stats({ 	{Stats::Common::Attractivnes, 100} 
-							,{Stats::Common::Influence, 100}
+				, _stats({ 	{Stats::Social::Attractivnes, 100} 
+							,{Stats::Social::Influence, 100}
 							,{Stats::Survival::Energy, 100}
 							,{Stats::Survival::Food, 100}
 							,{Stats::Survival::Water, 100}
 							,{Stats::Common::TotalExp, 0}
 							,{Stats::Common::Happines, 100}
 							,{Stats::Common::Wealth, 0}
-							});
-				, _inventroy()
+							})				
 			{
 				id(++curId);
+				_inventroy=new Inventroy();
 			};
+
+			~Character(){
+				delete _inventroy;
+			}
 
 			/**
 			 * @brief Изменить уровень желания
@@ -128,11 +134,19 @@ namespace Zen{
 			 * @param modifyLvl Уровень изменения желания
 			 */
 			inline void modifyWish(IdType wishId, int modifyLvl){
-				_wishes[wishId].addWishLvl(wishId,modifyLvl);
+				_wishes[wishId].addWishLvl(modifyLvl);
 			}
 
-			Inventroy& inventory() const{
-				return &inventory;
+			inline Inventroy* inventory(){
+				return _inventroy;
+			}
+
+			int stat(std::string stat){
+				return _stats[stat];
+			}
+
+			void stat(std::string stat, uint val){
+				_stats[stat] = val;
 			}
 		};
 	}

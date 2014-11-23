@@ -1,5 +1,5 @@
-#include "item.hpp"
+#include "item.h"
 
-Zen::AI::ResourceTypes::FOOD 	= "Food";
-Zen::AI::ResourceTypes::MINERAL = "Mineral";
-Zen::AI::ResourceTypes::WOOD 	= "Wood";
+const std::string Zen::AI::ResourceTypes::FOOD 	= "Food";
+const std::string Zen::AI::ResourceTypes::MINERAL = "Mineral";
+const std::string Zen::AI::ResourceTypes::WOOD 	= "Wood";

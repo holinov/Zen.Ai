@@ -1,6 +1,5 @@
 #pragma once
 #include "stdafx.h"
-#include "action.hpp"
 
 namespace Zen{
 	namespace AI{
@@ -20,7 +19,7 @@ namespace Zen{
 
 		struct SkillResult {
 			IdType SkillId;
-			std::vector<ActionResult> Results;
+			//std::vector<ActionResult> Results;
 		};
 	}
 }

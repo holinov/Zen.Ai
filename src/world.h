@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
-#include "character.hpp"
-#include "item.hpp"
+#include "character.h"
+#include "managers.h"
 
 namespace Zen{
 	namespace AI{
@@ -17,23 +17,30 @@ namespace Zen{
 			int _x;
 			int _y;
 			std::vector<Character*> _characters;
-			std::vector<InventoryItem> _resources;
 			World* _world;
-			Inventroy _inventory;
+			Inventroy* _inventory;
 
 		public:
 			Location(int x, int y, World* w)
 				: _x(x)
 				, _y(y)
 				, _characters()
-				, _resources()
 				, _world(w)
-				, _inventory()
-			{};
+			{
+				_inventory = new Inventroy();
+			};
+
+			~Location(){
+				delete _inventory;
+			}
 
 			
-			Inventroy& inventory() const{
-				return &_inventory;
+			inline Inventroy* inventory(){
+				return _inventory;
+			}
+
+			inline World* world(){
+				return _world;
 			}
 		};
 
@@ -43,6 +50,7 @@ namespace Zen{
 			std::vector<Character*> _characters;
 
 			void generateCharacters(unsigned chars){
+				WishManager mgr;
 				for(unsigned i = 0; i < chars; ++i) {
 					/* code */
 				}
@@ -54,17 +62,19 @@ namespace Zen{
 				, _characters()
 			{};
 			void generateWorld(unsigned maxX, unsigned maxY, unsigned chars){
-				std::vector<std::vector<Location*>> locs(maxY);
+				//std::vector<std::vector<Location*>> locs(maxX);
 				//Сгенерировать локации
 				for(unsigned x = 0; x < maxX; ++x) {
 					std::vector<Location*> row(maxY);
 					for(unsigned y = 0; y < maxY; ++y) {
 						Location* l= new Location(x,y,this);
+						row.push_back(l);
 
 						//Сгенерировать стартовые ресурсы локации
 						#warning TODO: generate resources
 						//l->generateResources();
 					}
+					_locations.push_back(row);
 				}
 
 				//Сгенерировать персонажей
@@ -76,6 +86,10 @@ namespace Zen{
 					for(auto&& loc : row) {
 						delete loc;
 					}
+				}
+
+				for(auto&& ch : _characters) {
+					delete ch;
 				}
 			}
 		};
