@@ -70,7 +70,7 @@ namespace Zen
                 ch->modifyWish(w->id(), 15);
             }
 
-            debugCharacter(ch);
+            //debugCharacter(ch);
             return ch;
         }
 
@@ -110,7 +110,7 @@ namespace Zen
 
             genstat stat {0, 0};
 
-            Log::MTLog::Instance().Debug() << "World::generateWorld start X:" << maxX << " Y:" << maxY << " CH:" << chars;
+            //Log::MTLog::Instance().Debug() << "World::generateWorld start X:" << maxX << " Y:" << maxY << " CH:" << chars;
             //std::vector<std::vector<Location*>> locs(maxX);
             //Сгенерировать локации
             //int count = 0;
@@ -141,7 +141,7 @@ namespace Zen
             ItemManager imgr;
             imgr.LoadActions();
 
-            Log::MTLog::Instance().Debug() << "Locations" << LINE;
+            /*Log::MTLog::Instance().Debug() << "Locations" << LINE;
             for (auto && l : _locations)
             {
                 Log::MTLog::Instance().Debug() << "Location x:" << l->x() << " y:" << l->y();
@@ -152,7 +152,7 @@ namespace Zen
             }
 
             Log::MTLog::Instance().Info() << "World::generateWorld done. " << stat.locs << " locations " << stat.resources << " resources";
-
+            */
             //Сгенерировать персонажей
             generateCharacters(chars);
         }

@@ -49,11 +49,29 @@ namespace Zen{
 			WishInfo(Wish* w, int lvl) : WishInfo(w->id(),lvl) {}
 			WishInfo(): WishInfo((IdType)0,0) {}
 
+			/**
+			 * @brief ИД типа желания
+			 */
 			inline const IdType wishId(){ return _wishId; }
+
+			/**
+			 * @brief ИД типа желания
+			 */
 			inline void wishId(IdType id) { _wishId=id; }
 
+			/**
+			 * @brief Уровень желания
+			 */
 			inline const int wishLvl() { return _wishLevel; }
+
+			/**
+			 * @brief Уровень желания
+			 */
 			inline void wishLvl(int lvl){ _wishLevel = lvl; }
+
+			/**
+			 * @brief Увеличить уровень желания
+			 */
 			inline void addWishLvl(int lvl){ 
 				int lnvl = _wishLevel += lvl; 
 				if(lnvl < 0) lnvl=0;

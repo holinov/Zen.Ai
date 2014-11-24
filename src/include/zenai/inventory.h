@@ -32,6 +32,11 @@ namespace Zen
                 return res;
             }
 
+            /**
+             * @brief Кол-во заданного ресурса
+             * 
+             * @param id ИД типа ресурса
+             */
             uint resAmmount(IdType id)
             {
                 if (hasItemTypeId(id))
@@ -44,6 +49,9 @@ namespace Zen
                 }
             }
 
+            /**
+             * @brief Общее кол-во предметов
+             */
             uint count()
             {
                 uint c = 0;
@@ -52,6 +60,14 @@ namespace Zen
                     c += i.second.count();
                 }
                 return c;
+            }
+
+            /**
+             * @brief Общее кол-во предметов (синоним)
+             */
+            inline uint getResourceCount(IdType type)
+            {
+                return resAmmount(type);
             }
 
             /**
@@ -206,6 +222,9 @@ namespace Zen
                 return resources;
             }
 
+            /**
+             * @brief Получить все предметы инвентаря
+             */
             std::vector<InventoryItem> getAll()
             {
                 std::vector<InventoryItem> resources;
@@ -217,10 +236,6 @@ namespace Zen
                 return resources;
             }
 
-            inline uint getResourceCount(IdType type)
-            {
-                return resAmmount(type);
-            }
         };
     }
 }

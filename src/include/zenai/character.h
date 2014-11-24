@@ -97,6 +97,11 @@ namespace Zen
 
         public:
 
+            /**
+             * @brief Выполнить следующее действие (в зависимости от желаний существа)
+             * 
+             * @param ctx Контекст действий
+             */
             void makeAction(Context *ctx);
 
             /**
@@ -151,16 +156,30 @@ namespace Zen
                 _wishes[wishId].addWishLvl(modifyLvl);
             }
 
+            /**
+             * @brief Инвентарь персонажа
+             */
             inline Inventory *inventory()
             {
                 return _Inventory;
             }
 
+            /**
+             * @brief Характеристика персонажа
+             * 
+             * @param stat Название характеристики
+             */
             int stat(std::string stat)
             {
                 return _stats[stat];
             }
 
+            /**
+             * @brief Задать характеристику персонажа
+             * 
+             * @param stat Название характеристики
+             * @param val Новое значение
+             */
             void stat(std::string stat, uint val)
             {
                 _stats[stat] = val;
@@ -176,6 +195,9 @@ namespace Zen
                 return res;
             }
 
+            /**
+             * @brief Список склонностей персонажа
+             */
             std::vector<AddictionInfo> addictions(){
             	 std::vector<AddictionInfo> res;
             	 for(auto&& i : _addictions) {
@@ -184,6 +206,11 @@ namespace Zen
             	 return res;
             }
 
+            /**
+             * @brief Задать новый список склонностей персонажа
+             * 
+             * @param adds Новый список зависимостей
+             */            
             void addictions(std::vector<AddictionInfo> adds)
             {
                 for (auto && a : adds)
