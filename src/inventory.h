@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "item.h"
+#include "managers.h"
 
 namespace Zen
 {
@@ -185,16 +186,32 @@ namespace Zen
              */
             std::vector<InventoryItem> getResourcesOfType(std::string type, unsigned int count)
             {
-                Manager<IdType, Item> itemManager;
+
+                ItemManager itemManager;
+                itemManager.LoadActions();
+
                 std::vector<InventoryItem> resources;
                 for (auto && invItem : _items)
                 {
-                    Item *item = itemManager.get(invItem.second.type());
+                    auto item = itemManager.get(invItem.second.type());
                     Resource *res = dynamic_cast<Resource *>(item);
+                    Log::MTLog::Instance().Debug() << "Resource " << res->name() << " type " << res->type();
+
                     if (res != nullptr && res->type() == type && invItem.second.count() >= count)
                     {
                         resources.push_back(invItem.second);
                     }
+                }
+
+                return resources;
+            }
+
+            std::vector<InventoryItem> getAll()
+            {
+                std::vector<InventoryItem> resources;
+                for (auto && invItem : _items)
+                {
+                    resources.push_back(invItem.second);
                 }
 
                 return resources;

@@ -12,74 +12,91 @@ namespace Zen
         {
             //namespace ActionSteps
             //{
-                bool ConsumeStep::isApplyable(Context *ctx, StepContext *stepCtx)
+            bool ConsumeStep::isApplyable(Context *ctx, StepContext *stepCtx)
+            {
+                return ctx->actorInfo().actor()->inventory()->hasItemTypeId(_type, _ammount)
+                       || ctx->location()->inventory()->hasItemTypeId(_type, _ammount);
+            }
+
+            bool ConsumeStep::applyToContext(Context *ctx, StepContext *stepCtx)
+            {
+                Log::MTLog::Instance().Debug() << "Consume step begin";
+                //Взять ресурс из природы
+                Inventory *inv = ctx->actorInfo().actor()->inventory();
+
+                if (_useContext)
                 {
-                    return ctx->actorInfo().actor()->inventory()->hasItemTypeId(_type, _ammount)
-                           || ctx->location()->inventory()->hasItemTypeId(_type, _ammount);
+                    _type = stepCtx->itemType;
                 }
 
-                bool ConsumeStep::applyToContext(Context *ctx, StepContext *stepCtx)
+                if (!inv->hasItemTypeId(_type, _ammount))
+                    inv = ctx->location()->inventory();
+
+                if (inv->hasItemTypeId(_type, _ammount))
                 {
-                    //Взять ресурс из природы
-                    Inventory *inv = ctx->actorInfo().actor()->inventory();
+                    InventoryItem item = InventoryItem(_type, _ammount);
+                    inv->take(item);
 
-                    if (_useContext)
-                    {
-                        _type = stepCtx->itemType;
-                    }
+                    Log::MTLog::Instance().Debug() << "Consume step end (true)";
 
-                    if (!inv->hasItemTypeId(_type, _ammount))
-                        inv = ctx->location()->inventory();
+                    return true;
+                }
+                Log::MTLog::Instance().Debug() << "Consume step end (false)";
 
-                    if (inv->hasItemTypeId(_type, _ammount))
-                    {
-                        InventoryItem item = InventoryItem(_type, _ammount);
-                        inv->take(item);
-                        return true;
-                    }
+                return false;
+            }
 
-                    return false;
+            bool LootStep::applyToContext(Context *ctx, StepContext *stepCtx)
+            {
+                //Взять ресурс из природы
+                Inventory *inv = ctx->actorInfo().actor()->inventory();
+
+                if (_useContext)
+                {
+                    _type = stepCtx->itemType;
                 }
 
-                bool LootStep::applyToContext(Context *ctx, StepContext *stepCtx)
+                if (_ammountFromContext)
                 {
-                    //Взять ресурс из природы
-                    Inventory *inv = ctx->actorInfo().actor()->inventory();
-
-                    if (_useContext)
-                    {
-                        _type = stepCtx->itemType;
-                    }
-
-                    if (_ammountFromContext)
-                    {
-                        _ammount = ctx->location()->inventory()->resAmmount(_type);
-                    }
-
-                    if (inv->hasItemTypeId(_type, _ammount))
-                    {
-                        auto item = InventoryItem(_type, _ammount);
-                        ctx->location()->inventory()->take(item);
-                        ctx->actorInfo().actor()->inventory()->add(item);
-                        return true;
-                    }
-
-                    return false;
+                    _ammount = ctx->location()->inventory()->resAmmount(_type);
                 }
 
-                bool LootStep::isApplyable(Context *ctx, StepContext *stepCtx)
+                if (inv->hasItemTypeId(_type, _ammount))
                 {
-                    return ctx->actorInfo().actor()->inventory()->hasItemTypeId(_type, _ammount)
-                           || ctx->location()->inventory()->hasItemTypeId(_type, _ammount);
+                    auto item = InventoryItem(_type, _ammount);
+                    ctx->location()->inventory()->take(item);
+                    ctx->actorInfo().actor()->inventory()->add(item);
+                    return true;
                 }
 
-                bool FindBestResourceOfTypeStep::applyToContext(Context *ctx, StepContext *stepCtx)
+                return false;
+            }
+
+            bool LootStep::isApplyable(Context *ctx, StepContext *stepCtx)
+            {
+                return ctx->actorInfo().actor()->inventory()->hasItemTypeId(_type, _ammount)
+                       || ctx->location()->inventory()->hasItemTypeId(_type, _ammount);
+            }
+
+            bool FindBestResourceOfTypeStep::applyToContext(Context *ctx, StepContext *stepCtx)
+            {
+                ItemManager items;
+                items.LoadActions();
+
+                Log::MTLog::Instance().Debug() << "FindBestResourceOfTypeStep";
+
+                //Найти все ресурсы нужного типа
+                auto loc = ctx->location();
+                auto inv = loc->inventory();
+
+                std::vector<InventoryItem> resources = inv->getResourcesOfType(_resType);
+                Log::MTLog::Instance().Debug() << "Resources count: " << resources.size();
+
+                if (resources.size() > 0 )
                 {
-                    Manager<IdType, Item> items;
-                    //Найти все ресурсы нужного типа
-                    std::vector<InventoryItem> resources = ctx->location()->inventory()->getResourcesOfType(_resType);
                     for (auto && res : resources)
                     {
+                        Log::MTLog::Instance().Debug() << "res: " << res.type();
                         resources.push_back(res);
                     }
 
@@ -101,32 +118,41 @@ namespace Zen
                     stepCtx->itemType = bestItem.type();
                     stepCtx->resource = resInfo;
                     stepCtx->ammount = bestItem.count();
+                    Log::MTLog::Instance().Debug() << "FindBestResourceOfTypeStep end (true)";
 
                     return true;
+
                 }
+                Log::MTLog::Instance().Debug() << "FindBestResourceOfTypeStep end (false)";
+                return false;
+            }
 
-                bool FindBestResourceOfTypeStep::isApplyable(Context *ctx, StepContext *stepCtx)
-                {
-                    return  ctx->actorInfo().actor()->inventory()->hasResourceOfType(_resType)
-                            || ctx->location()->inventory()->hasResourceOfType(_resType);
-                }
+            bool FindBestResourceOfTypeStep::isApplyable(Context *ctx, StepContext *stepCtx)
+            {
+                return  ctx->actorInfo().actor()->inventory()->hasResourceOfType(_resType)
+                        || ctx->location()->inventory()->hasResourceOfType(_resType);
+            }
 
-                bool ChangeStatStep::applyToContext(Context *ctx, StepContext *stepCtx)
-                {
-                    std::string stat = _stat;
-                    int change = _change;
-                    if (_useContext) change = stepCtx->ammount;
+            bool ChangeStatStep::applyToContext(Context *ctx, StepContext *stepCtx)
+            {
+                Log::MTLog::Instance().Debug() << "ChangeStatStep";
 
-                    uint old = ctx->actorInfo().actor()->stat(stat);
+                std::string stat = _stat;
+                int change = _change;
+                if (_useContext) change = stepCtx->ammount;
+
+                Log::MTLog::Instance().Debug() << "ChangeStatStep "<< stat << " : " << change;
+
+                uint old = ctx->actorInfo().actor()->stat(stat);
 #warning продумать контекст изменения статов
-                    ctx->actorInfo().actor()->stat(stat, old + change);
-                    return true;
-                }
+                ctx->actorInfo().actor()->stat(stat, old + change);
+                return true;
+            }
 
-                bool ChangeStatStep::isApplyable(Context *ctx, StepContext *stepCtx)
-                {
-                    return true;
-                }
+            bool ChangeStatStep::isApplyable(Context *ctx, StepContext *stepCtx)
+            {
+                return true;
+            }
 
             //}
         }

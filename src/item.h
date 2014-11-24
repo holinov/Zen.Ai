@@ -79,7 +79,7 @@ namespace Zen{
 		class Food : public Resource {
 		public:
 			Food()
-				:Resource(0,"Raw food (berries)",ResourceTypes::FOOD,1)
+				:Resource(13,"Raw food (berries)",ResourceTypes::FOOD,1)
 			{}
 
 			virtual ~Food(){}

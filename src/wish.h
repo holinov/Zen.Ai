@@ -34,7 +34,7 @@ namespace Zen{
 		/**
 		 * @brief Информация о желании существа
 		 */
-		class WishInfo {
+		struct WishInfo {
 		private:
 			IdType _wishId;
 			int _wishLevel;
@@ -50,7 +50,11 @@ namespace Zen{
 
 			inline const int wishLvl() { return _wishLevel; }
 			inline void wishLvl(int lvl){ _wishLevel = lvl; }
-			inline void addWishLvl(int lvl){ _wishLevel += lvl; }
+			inline void addWishLvl(int lvl){ 
+				int lnvl = _wishLevel += lvl; 
+				if(lnvl < 0) lnvl=0;
+				wishLvl(lnvl);
+			}
 		};
 	}
 }

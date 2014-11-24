@@ -36,6 +36,8 @@ namespace Zen{
 				:AddictionInfo(w->id(),wishLevel)
 			{}
 
+			AddictionInfo():AddictionInfo((IdType)0,0) {} 
+
 			/**
 			 * @brief ИД желания склонности
 			 */
@@ -49,7 +51,7 @@ namespace Zen{
 			/**
 			 * @brief Силя влияния на желание
 			 */
-			inline const int wishLvl() { return _wishId; }
+			inline const int wishLvl() { return _wishLevel; }
 			
 			/**
 			 * @brief Силя влияния на желание

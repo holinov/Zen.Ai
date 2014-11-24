@@ -147,7 +147,7 @@ namespace Zen
                 class EatRawAction : public StepsAction
                 {
                 public:
-                    EatRawAction() : StepsAction(0, "Eat raw", 1 , {{0, 10}})
+                    EatRawAction() : StepsAction(0, "Eat raw", 1 , {{0, 12}})
                     {
                         _steps.push_back(new FindBestResourceOfTypeStep(ResourceTypes::FOOD));
                         _steps.push_back(new ConsumeStep(1));
@@ -164,6 +164,15 @@ namespace Zen
                     {
                         _steps.push_back(new FindBestResourceOfTypeStep(ResourceTypes::FOOD));
                         _steps.push_back(new LootStep());
+                    }
+                };
+
+                class RestAction : public StepsAction
+                {
+                public:
+                    RestAction() : StepsAction(2, "Eat raw", 1 , {{1, 10}})
+                    {
+                       _steps.push_back(new ChangeStatStep(Character::Stats::Survival::Energy, 5));
                     }
                 };
             //}

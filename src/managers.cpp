@@ -5,13 +5,14 @@ namespace Zen
 {
     namespace AI
     {
-        void ItemManager::LoadActions()
+        /*void ItemManager::LoadActions()
         {
             Item *i = new Food();
             set(i->id(), i);
-        }
+        }*/
 
-        void WishManager::LoadActions()
+
+        /*void WishManager::LoadActions()
         {
             IdType i = 0;
 
@@ -21,7 +22,7 @@ namespace Zen
             ++i;
             Wish *w2 = new Wish(i, "To sleep");
             set(i, w2);
-        }
+        }*/
 
         void ActionManager::LoadActions()
         {
@@ -32,6 +33,9 @@ namespace Zen
 
             Action *a2 = new Steps::CollectFoodAction();
             set(a2->id(), a2);
+
+            a2=new Steps::RestAction();
+            set(a2->id(),a2);
         }
 
     }

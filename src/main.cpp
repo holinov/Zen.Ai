@@ -12,7 +12,15 @@ int main(int argc, char const *argv[])
 {
     MTLog::Instance().Info() << "Zen Ai Startup";
     World world;
-    world.generateWorld(3,2,10);
+    world.generateWorld(3,2,1);
+
+    world.makeWorldStep();
+    char i;
+    std::cin >> i;
+    world.makeWorldStep();
+    
+    std::cin >> i;
+    world.makeWorldStep();
     //ActionManager itemManager;
     //itemManager.LoadActions();
 

@@ -6,6 +6,11 @@ namespace Zen
 {
     namespace AI
     {
+        template<class ItemType>
+        struct ManagerLoader {
+            //std::vector<ItemType*> load();//{ return std::vector<ItemType*>();}
+        };
+
         template<class KeyType, class ItemType>
         class Manager
         {
@@ -74,6 +79,7 @@ namespace Zen
                 {          
                     return _cache[key];
                 }
+                Log::MTLog::Instance().Debug() << "Have no data for key: " << key << ". Have :" << _cache.size();
                 return nullptr;
             }
 
@@ -123,7 +129,8 @@ namespace Zen
             }
 protected:
             std::vector<ItemType*> loadItems(){
-            	return std::vector<ItemType*>();
+            	ManagerLoader<ItemType> loader;
+                return loader.load();
             }
         };
     }

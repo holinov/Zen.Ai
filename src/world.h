@@ -42,14 +42,18 @@ namespace Zen{
 			inline World* world(){
 				return _world;
 			}
+
+			inline int x(){return _x;}
+			inline int y(){return _y;}
 		};
 
 		class World {
 		private:
-			std::vector<std::vector<Location*>> _locations;
+			std::vector<Location*> _locations;
 			std::vector<Character*> _characters;
 
 			void generateCharacters(unsigned chars);
+
 
 		public:
 			World() 
@@ -57,12 +61,13 @@ namespace Zen{
 				, _characters()
 			{};
 			void generateWorld(unsigned maxX, unsigned maxY, unsigned chars);
+			void makeWorldStep();
 
 			~World(){
-				for(auto&& row : _locations) {
-					for(auto&& loc : row) {
+				for(auto&& loc : _locations) {
+					//for(auto&& loc : row) {
 						delete loc;
-					}
+					//}
 				}
 
 				for(auto&& ch : _characters) {
