@@ -1,7 +1,7 @@
 #include <algorithm>
-#include "character.h"
-#include "wish.h"
-#include "managers.h"
+#include <zenai/character.h>
+#include <zenai/wish.h>
+#include <zenai/managers.h>
 
 IdType Zen::AI::Character::curId = 0;
 

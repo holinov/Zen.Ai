@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "log.h"
-#include "world.h"
+#include <zenai/stdafx.h>
+#include <zenai/log.h>
+#include <zenai/world.h>
 //#include "ai_common.h"
 //#include "steps.h"
 

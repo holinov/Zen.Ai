@@ -57,6 +57,7 @@ include_directories(
 	libs/sha1
 	libs/gtest
 	libs/gtest/include
+	src/include
 	${ZLIB_INCLUDES}
 	${MORE_INCLUDES})
 
@@ -82,7 +83,7 @@ add_custom_target(uninstall
 if(MAKE_TESTS)
 	message(STATUS "Making unit tests")
 
-	file(GLOB TEST_SOURCES "src/tests/unit_tests/*.cpp")
+	file(GLOB TEST_SOURCES "src/tests/*.cpp")
 	foreach(TEST_FILE ${TEST_SOURCES})
 	  get_filename_component(TEST_FILE_NAME ${TEST_FILE} NAME_WE)
 	  message(STATUS "Processing file: ${TEST_FILE_NAME}.cpp")
@@ -92,7 +93,7 @@ if(MAKE_TESTS)
 	  if(WIN32)
 	  	set(TLB WS2_32.lib)
 	  endif()
-	  target_link_libraries(${TEST_FILE_NAME} rdc gtest gtest_main ${TLB})
+	  target_link_libraries(${TEST_FILE_NAME} zenai_lib gtest gtest_main ${TLB})
 
 	  #Кладем проект в папку решения
 	  SET_PROPERTY(TARGET ${TEST_FILE_NAME} PROPERTY FOLDER "Tests/UnitTests")

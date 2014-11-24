@@ -1,9 +1,9 @@
-#include "world.h"
-#include "log.h"
-#include "item.h"
-#include "managers.h"
-#include "character.h"
-#include "context.h"
+#include <zenai/world.h>
+#include <zenai/log.h>
+#include <zenai/item.h>
+#include <zenai/managers.h>
+#include <zenai/character.h>
+#include <zenai/context.h>
 
 static const std::string LINE = "=========================\r\n";
 

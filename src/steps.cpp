@@ -1,7 +1,7 @@
-#include "context.h"
-#include "steps.h"
-#include "item.h"
-#include "action_steps.h"
+#include <zenai/context.h>
+#include <zenai/steps.h>
+#include <zenai/item.h>
+#include <zenai/action_steps.h>
 
 
 namespace Zen

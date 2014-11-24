@@ -1,10 +1,8 @@
-#include "action.h"
-#include "context.h"
+#include <zenai/action.h>
+#include <zenai/context.h>
 
 std::vector<Zen::AI::ActionResult> Zen::AI::Action::applyResults(Context *ctx, int skillLvl)
 {
-    Log::MTLog::Instance().Debug() << "Zen::AI::Action::applyResults";
-
     //Применить действие к контексту
     applyToContext(ctx);
 
@@ -12,8 +10,12 @@ std::vector<Zen::AI::ActionResult> Zen::AI::Action::applyResults(Context *ctx, i
     for (auto && wish : _affectedWishes)
     {
         //Изменени уровня желания = Базовый уровень + Базовый уровень % Уровень умения
-        int modifyLvl = wish.second + wish.second / 100 * skillLvl;
-        Log::MTLog::Instance().Debug() << "Modify wish:" << wish.first << " level: " << modifyLvl;
+        float modifyLvlF= wish.second + (float)wish.second / 100 * skillLvl;
+
+        //Усекаем до целых
+        int modifyLvl = (int)modifyLvlF;
+
+        //Log::MTLog::Instance().Debug() << "Modify wish:" << wish.first << " level: " << modifyLvl << " addition: " << (float)wish.second / 100 * skillLvl;
 
         //Прменить изменения уровня желания
         ctx->actorInfo().actor()->modifyWish(wish.first, -modifyLvl);

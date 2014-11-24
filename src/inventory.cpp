@@ -1,1 +1,1 @@
-#include "inventory.h"
+#include <zenai/inventory.h>

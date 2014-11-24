@@ -38,12 +38,16 @@ namespace Zen{
 		private:
 			IdType _wishId;
 			int _wishLevel;
+			std::vector<SkillResult> _histroy;
+
 		public:
 			WishInfo(IdType wishId, int wishLevel) 
 				:_wishId(wishId)
 				,_wishLevel(wishLevel)
+				,_histroy()
 			{};
-			WishInfo(): WishInfo(0,0) {}
+			WishInfo(Wish* w, int lvl) : WishInfo(w->id(),lvl) {}
+			WishInfo(): WishInfo((IdType)0,0) {}
 
 			inline const IdType wishId(){ return _wishId; }
 			inline void wishId(IdType id) { _wishId=id; }

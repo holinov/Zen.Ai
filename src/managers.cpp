@@ -1,5 +1,5 @@
-#include "managers.h"
-#include "steps.h"
+#include <zenai/managers.h>
+#include <zenai/steps.h>
 
 namespace Zen
 {
