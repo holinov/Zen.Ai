@@ -11,7 +11,7 @@ std::vector<Zen::AI::ActionResult> Zen::AI::Action::applyResults(Context *ctx, i
     for (auto && wish : _affectedWishes)
     {
         //Изменени уровня желания = Базовый уровень + Базовый уровень % Уровень умения
-        float modifyLvlF= wish.second + (float)wish.second / 100 * skillLvl;
+        float modifyLvlF = wish.second + (float)wish.second / 100 * skillLvl;
 
         //Усекаем до целых
         int modifyLvl = (int)modifyLvlF;

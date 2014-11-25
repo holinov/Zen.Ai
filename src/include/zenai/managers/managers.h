@@ -21,7 +21,7 @@ namespace Zen
             }
         };
 
-        class ItemManager: public Manager<IdType, Item>
+        class ItemManager: public Manager<Item>
         {
         private:
 
@@ -39,7 +39,7 @@ namespace Zen
             }; };
         };
 
-        class WishManager: public Manager<IdType, Wish>
+        class WishManager: public Manager<Wish>
         {
         public:
             WishManager(/* args */) = default;

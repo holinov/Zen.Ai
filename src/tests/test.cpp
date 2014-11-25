@@ -11,3 +11,4 @@
 #include "unit_tests/wish_tests.cpp"
 #include "unit_tests/world_tests.cpp"
 #include "unit_tests/skill_tests.cpp"
+#include "unit_tests/char_generator_tests.cpp"

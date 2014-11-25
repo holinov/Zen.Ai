@@ -7,21 +7,23 @@ namespace Zen
     namespace AI
     {
         template<class ItemType>
-        struct ManagerLoader {
+        struct ManagerLoader
+        {
             //std::vector<ItemType*> load();//{ return std::vector<ItemType*>();}
         };
 
         template<class KeyType, class ItemType>
-        class Manager
+        class ManagerImpl
         {
         private:
             std::map<KeyType, ItemType *> _cache;
             std::map<KeyType, unsigned long> _counts;
             unsigned int _maxCount;
+            bool _firstTime = true;
         protected:
             void cleanup()
             {
-                if(_cache.size() > _maxCount)
+                if (_cache.size() > _maxCount)
                 {
                     bool firstRun = true;
                     unsigned long minCnt;
@@ -59,15 +61,6 @@ namespace Zen
                 }
             }
         public:
-            Manager(int max)
-                : _cache()
-                , _counts()
-                , _maxCount(max)
-        	{
-                LoadActions();
-            };
-
-        	Manager() : Manager(10) {};
 
             inline bool contains(KeyType key) const
             {
@@ -78,18 +71,18 @@ namespace Zen
             ItemType *get(KeyType key)
             {
                 if (contains(key))
-                {          
+                {
                     return _cache[key];
                 }
                 Log::MTLog::Instance().Debug() << "Have no data for key: " << key << ". Have :" << _cache.size();
                 return nullptr;
             }
 
-            void set(KeyType key, ItemType * val)
+            void set(KeyType key, ItemType *val)
             {
                 _cache[key] = val;
-                if(!contains(key))
-                	_counts[key] = 1;
+                if (!contains(key))
+                    _counts[key] = 1;
 
                 for (auto && _cnt : _counts)
                 {
@@ -99,15 +92,17 @@ namespace Zen
                 cleanup();
             }
 
-            std::vector<KeyType> getAllIds(){
-            	std::vector<KeyType> res;
-                for(auto&& cnt : _counts) {
+            std::vector<KeyType> getAllIds()
+            {
+                std::vector<KeyType> res;
+                for (auto && cnt : _counts)
+                {
                     res.push_back(cnt.first);
-            	}
-            	return res;
+                }
+                return res;
             }
 
-            virtual ~Manager()
+            virtual ~ManagerImpl()
             {
                 for (auto && i : _cache)
                 {
@@ -115,24 +110,58 @@ namespace Zen
                 }
             }
 
-            std::vector<ItemType*> getAll(){
-                std::vector<ItemType*> res;
-                for(auto&& it : _cache) {
+            std::vector<ItemType *> getAll()
+            {
+                std::vector<ItemType *> res;
+                for (auto && it : _cache)
+                {
                     res.push_back(it.second);
                 }
                 return res;
             }
-        
-            void LoadActions()
+        protected:
+            std::vector<ItemType *> loadItems()
             {
-            	for(auto&& i : loadItems()) {
-            		set(i->id(),i);
-            	}
-            }
-protected:
-            std::vector<ItemType*> loadItems(){
-            	ManagerLoader<ItemType> loader;
+                ManagerLoader<ItemType> loader;
                 return loader.load();
+            }
+
+            ManagerImpl(int max)
+                : _cache()
+                , _counts()
+                , _maxCount(max)
+            {
+                load();
+            };
+
+            ManagerImpl() : ManagerImpl(10) {};
+        private:
+            void load()
+            {
+                if (_firstTime)
+                {
+                    for (auto && i : loadItems())
+                    {
+                        set(i->id(), i);
+                    }
+                    _firstTime = false;
+                }
+            }
+        };
+
+
+        template<class ItemType>
+        class Manager : public ManagerImpl<IdType, ItemType>
+        {
+        protected:
+            Manager(int max) : ManagerImpl<IdType, ItemType>(10) {};
+            Manager() : Manager(10) {};
+            
+        public:
+            static Manager<ItemType>* instance()
+            {
+                static Manager<ItemType>* inst = new Manager<ItemType>();
+                return inst;
             }
         };
     }

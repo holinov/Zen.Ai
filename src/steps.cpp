@@ -25,7 +25,6 @@ namespace Zen
 
             bool ConsumeStep::applyToContext(Context *ctx, StepContext *stepCtx)
             {
-                Log::MTLog::Instance().Debug() << "Consume step begin";
                 //Взять ресурс из природы
                 Inventory *inv = ctx->actorInfo().actor()->inventory();
 
@@ -41,13 +40,8 @@ namespace Zen
                 {
                     InventoryItem item = InventoryItem(_type, _ammount);
                     inv->take(item);
-
-                    Log::MTLog::Instance().Debug() << "Consume step end (true)";
-
                     return true;
                 }
-                Log::MTLog::Instance().Debug() << "Consume step end (false)";
-
                 return false;
             }
 
@@ -86,22 +80,17 @@ namespace Zen
             bool FindBestResourceOfTypeStep::applyToContext(Context *ctx, StepContext *stepCtx)
             {
                 ItemManager items;
-                items.LoadActions();
-
-                Log::MTLog::Instance().Debug() << "FindBestResourceOfTypeStep";
 
                 //Найти все ресурсы нужного типа
                 auto loc = ctx->location();
                 auto inv = loc->inventory();
 
                 std::vector<InventoryItem> resources = inv->getResourcesOfType(_resType);
-                Log::MTLog::Instance().Debug() << "Resources count: " << resources.size();
 
                 if (resources.size() > 0 )
                 {
                     for (auto && res : resources)
                     {
-                        Log::MTLog::Instance().Debug() << "res: " << res.type();
                         resources.push_back(res);
                     }
 
@@ -123,12 +112,10 @@ namespace Zen
                     stepCtx->itemType = bestItem.type();
                     stepCtx->resource = resInfo;
                     stepCtx->ammount = bestItem.count();
-                    Log::MTLog::Instance().Debug() << "FindBestResourceOfTypeStep end (true)";
 
                     return true;
 
                 }
-                Log::MTLog::Instance().Debug() << "FindBestResourceOfTypeStep end (false)";
                 return false;
             }
 
@@ -140,14 +127,11 @@ namespace Zen
 
             bool ChangeStatStep::applyToContext(Context *ctx, StepContext *stepCtx)
             {
-                Log::MTLog::Instance().Debug() << "ChangeStatStep";
 
                 std::string stat = _stat;
                 int change = _change;
                 if (_useContext) change = stepCtx->ammount;
-
-                Log::MTLog::Instance().Debug() << "ChangeStatStep "<< stat << " : " << change;
-
+                
                 uint old = ctx->actorInfo().actor()->stat(stat);
 #warning продумать контекст изменения статов
                 ctx->actorInfo().actor()->stat(stat, old + change);

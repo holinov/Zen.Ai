@@ -28,8 +28,7 @@ namespace Zen
         }
 
         Character::Character()
-            : Stats()
-            , _wishes()
+            : _wishes()
             , _addictions()
             , _skills()
             , _stats({  {Stats::Social::Attractivnes, 100}
@@ -76,9 +75,8 @@ namespace Zen
             //Выбрать умение для удовлетворения
             auto history = wishInfo.history();
 
-            Manager<IdType,Action> mgr;
-            mgr.LoadActions();
-            auto action = mgr.getAll()[0];
+            Manager<Action>* mgr = Manager<Action>::instance();
+            auto action = mgr->getAll()[0];
 
             action->applyResults(ctx, 1);
             Log::MTLog::Instance().Debug() << "Selected action " << action->name() << " DONE";
@@ -150,5 +148,16 @@ namespace Zen
                 _wishes[wish.first].addHistroy(sr);
             }
         }
+
+        void Character::addSkill(Skill *skill)
+        {
+            IdType skillId = skill->id();
+            auto it = _skills.find(skillId);
+            if (it == _skills.end())
+            {
+                _skills[skillId] = SkillInfo(skillId, 10);
+            }
+        }
+
     } // AI
 } // Zen

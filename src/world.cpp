@@ -3,6 +3,7 @@
 #include <zenai/item.h>
 #include <zenai/managers.h>
 #include <zenai/character.h>
+#include <zenai/char_generator.h>
 #include <zenai/context.h>
 
 static const std::string LINE = "=========================\r\n";
@@ -14,7 +15,6 @@ namespace Zen
         static void debugCharacter(Character *ch)
         {
             WishManager mgr;
-            mgr.LoadActions();
 
             auto clog = Log::MTLog::Instance().Log("CharInfo") << "";
             clog << std::endl << LINE << "Character stats:" << std::endl << LINE << std::endl;
@@ -59,10 +59,11 @@ namespace Zen
 
         Character *newCharacter()
         {
-            Character *ch = new Character();
+            CharGenerator gen;
+            return gen.generate();
+            /*Character *ch = new Character();
 
             WishManager mgr;
-            mgr.LoadActions();
             ch->addictions(mgr.makeAddictions());
 
             for (auto && w : mgr.getAll())
@@ -71,7 +72,7 @@ namespace Zen
             }
 
             //debugCharacter(ch);
-            return ch;
+            return ch;*/
         }
 
         void World::generateCharacters(unsigned chars)
@@ -106,8 +107,6 @@ namespace Zen
         void World::generateWorld(unsigned maxX, unsigned maxY, unsigned chars)
         {
             ItemManager mgr;
-            mgr.LoadActions();
-
             genstat stat {0, 0};
 
             //Log::MTLog::Instance().Debug() << "World::generateWorld start X:" << maxX << " Y:" << maxY << " CH:" << chars;
@@ -138,8 +137,7 @@ namespace Zen
                 //_locations.push_back(row);
             }
 
-            ItemManager imgr;
-            imgr.LoadActions();
+            //ItemManager imgr;
 
             /*Log::MTLog::Instance().Debug() << "Locations" << LINE;
             for (auto && l : _locations)

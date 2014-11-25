@@ -16,10 +16,9 @@ namespace Zen
             std::vector<Skill *> getBasicSkills()
             {
                 std::vector<Skill *> skills;
-                Manager<IdType, Action> actMgr;
-                actMgr.LoadActions();
-
-                for (auto && act : actMgr.getAll())
+                Manager<Action>* actMgr = Manager<Action>::instance();
+ 
+                for (auto && act : actMgr->getAll())
                 {
                     BasicSkill *s = new BasicSkill(act);
                     skills.push_back(s);

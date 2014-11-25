@@ -166,11 +166,12 @@ namespace Zen
              */
             bool hasResourceOfType(std::string type) const
             {
-                Manager<IdType, Item> itemManager;
+                auto itemManager = Manager<Item>::instance();
+                
                 bool has = false;
                 for (auto && invItem : _items)
                 {
-                    Item *item = itemManager.get(invItem.second.type());
+                    Item *item = itemManager->get(invItem.second.type());
                     Resource *res = dynamic_cast<Resource *>(item);
                     if (res != nullptr && res->type() == type)
                     {
@@ -214,17 +215,13 @@ namespace Zen
              */
             std::vector<InventoryItem> getResourcesOfType(std::string type, unsigned int count)
             {
-
-                ItemManager itemManager;
-                itemManager.LoadActions();
+                auto itemManager = Manager<Item>::instance();
 
                 std::vector<InventoryItem> resources;
                 for (auto && invItem : _items)
                 {
-                    auto item = itemManager.get(invItem.second.type());
-                    Resource *res = dynamic_cast<Resource *>(item);
-                    Log::MTLog::Instance().Debug() << "Resource " << res->name() << " type " << res->type();
-
+                    auto item = itemManager->get(invItem.second.type());
+                    Resource *res = dynamic_cast<Resource *>(item);                    
                     if (res != nullptr && res->type() == type && invItem.second.count() >= count)
                     {
                         resources.push_back(invItem.second);

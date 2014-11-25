@@ -2,12 +2,15 @@
 #include "stdafx.h"
 #include "action.h"
 
+
+#include <typeinfo>
+
 namespace Zen
 {
     namespace AI
     {
 
-    	class Context;
+        class Context;
 
         /**
          * @brief Результат исполнения умения
@@ -54,9 +57,9 @@ namespace Zen
             bool applySkill(Context *ctx);
             virtual std::map<IdType, int> getAffectedWishes() = 0;
             virtual ~Skill() {}
-            
+
         protected:
-        	Skill(IdType id, std::string name)
+            Skill(IdType id, std::string name)
                 : HasId(id)
                 , HasName(name)
             {};
@@ -89,14 +92,15 @@ namespace Zen
             };
         };
 
-        class CompositeSkill : public Skill {
+        class CompositeSkill : public Skill
+        {
         private:
-        	std::vector<Skill*> _skills;
+            std::vector<Skill *> _skills;
         public:
-        	CompositeSkill(IdType id,std::string name)
-    			:Skill(id,name)
-    			, _skills()
-        	{}
+            CompositeSkill(IdType id, std::string name)
+                : Skill(id, name)
+                , _skills()
+            {}
         };
 
         /**
@@ -188,9 +192,10 @@ namespace Zen
             inline void skillExpInc()
             {
                 ++_skillExp;
-                if(_skillExp >= _skillLevel){
-                	++_skillLevel;
-                	_skillExp = 0;
+                if (_skillExp >= _skillLevel)
+                {
+                    ++_skillLevel;
+                    _skillExp = 0;
                 }
             }
         };

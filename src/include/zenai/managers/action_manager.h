@@ -17,9 +17,9 @@ namespace Zen
             {
                 return std::vector<Action *>
                 {
-                    //new Steps::EatRawAction(),
-                    //new Steps::CollectFoodAction(),
-                    //new Steps::RestAction()
+                    new Steps::EatRawAction(),
+                    new Steps::CollectFoodAction(),
+                    new Steps::RestAction()
                 };
             }
         };

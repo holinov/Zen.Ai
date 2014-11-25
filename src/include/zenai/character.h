@@ -30,6 +30,10 @@ namespace Zen
                 _history.push_back(res);
             }
 
+            uint const count() const{
+                return _history.size();
+            }
+
             std::vector<SkillResult> get()
             {
                 return _history;
@@ -120,6 +124,8 @@ namespace Zen
             Inventory *_Inventory;
 
         public:
+            Character();
+            ~Character();
 
             /**
              * @brief Выполнить следующее действие (в зависимости от желаний существа)
@@ -135,15 +141,6 @@ namespace Zen
              * @return Кол-во доступных ресурсов
              */
             int getResourceCount(IdType resourceId);
-
-            /**
-             * @brief Характеристики персонажа
-             */
-            Stats Stats;
-
-            Character();
-
-            ~Character();
 
             /**
              * @brief Изменить уровень желания
@@ -182,68 +179,35 @@ namespace Zen
                 _stats[stat] = val;
             }
 
-            std::vector<WishInfo> wishes();/*
-            {
-                std::vector<WishInfo> res;
-                for (auto && i : _wishes)
-                {
-                    res.push_back(i.second);
-                }
-                return res;
-            }*/
+            std::vector<WishInfo> wishes();
 
             /**
              * @brief Список склонностей персонажа
              */
-            std::vector<AddictionInfo> addictions();/*
-            {
-                std::vector<AddictionInfo> res;
-                for (auto && i : _addictions)
-                {
-                    res.push_back(i.second);
-                }
-                return res;
-            }*/
+            std::vector<AddictionInfo> addictions();
 
             /**
              * @brief Задать новый список склонностей персонажа
              *
              * @param adds Новый список зависимостей
              */
-            void addictions(std::vector<AddictionInfo> adds);/*
-            {
-                for (auto && a : adds)
-                {
-                    _addictions[a.wishId()] = a;
-                    modifyWish(a.wishId(), 0);
-                }
-            }*/
+            void addictions(std::vector<AddictionInfo> adds);
 
-            void addWishHistory(const SkillResult& sr);/*{
-                _history->add(sr);
-                for(auto&& wish : sr.affectedWishes()) {
-                    _wishes[wish.first].addHistroy(sr);
-                }
-            }*/
+            void addWishHistory(const SkillResult& sr);
 
             const SkillHistoryManager *history() const
             {
                 return _history;
             }
 
-            const std::map<IdType, SkillInfo> skills() const
+            std::map<IdType, SkillInfo> skills()
             {
                 return _skills;
             }
 
-            SkillInfo* skill(IdType skillId);/*
-            {
-                auto it = _skills.find(skillId);
-                if(it == _skills.end()){
-                    _skills[skillId] = SkillInfo(skillId, 0);
-                }
-                return &_skills[skillId];
-            }*/
+            void addSkill(Skill* skill);
+
+            SkillInfo* skill(IdType skillId);
         };
     }
 }

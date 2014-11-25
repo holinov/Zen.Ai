@@ -16,11 +16,10 @@ namespace Zen
         bool Skill::applySkill(Context *ctx)
         {
             SkillResult sr;
-
             auto actor = ctx->actorInfo().actor();
 
             //Получаем текущий уровень умения
-            SkillInfo* skillInfo = actor->skill(id());
+            SkillInfo *skillInfo = actor->skill(id());
             std::vector<ActionResult> results = applyToContext(ctx, skillInfo->skillLvl());
 
             //Записываем историю
@@ -30,9 +29,12 @@ namespace Zen
 
             //поднимаем уровень скила
             int roll = d100();
-            if(roll <= skillInfo->skillExp()){
+            if (roll <= skillInfo->skillExp())
+            {
                 skillInfo->skillExpInc();
             }
+
+            return true;
         }
 
     }

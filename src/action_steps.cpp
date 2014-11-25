@@ -11,12 +11,10 @@ namespace Zen
             bool StepsAction::applyToContext(Context *ctx)
             {
                 StepContext *sctx = new StepContext();
-                Log::MTLog::Instance().Debug() << "StepsAction " << _steps.size();
                 bool res=true;
                 int idx=0;
                 for (auto && step : _steps)
                 {
-                    Log::MTLog::Instance().Debug() << "StepsAction step: " << idx++;
                     if(!step->applyToContext(ctx, sctx))
                     {
                         res = false;
