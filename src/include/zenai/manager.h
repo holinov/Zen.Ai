@@ -6,12 +6,32 @@ namespace Zen
 {
     namespace AI
     {
+        /**
+         * @brief ЗАгрузчик менеджера
+         * @details Описывает первичную загрузку менеджера
+         *
+         * @tparam ItemType Тип элемента
+         */
         template<class ItemType>
         struct ManagerLoader
         {
-            //std::vector<ItemType*> load();//{ return std::vector<ItemType*>();}
+            /**
+             * @brief Читает данные менеджера с диска
+             *
+             * @return Вектор прочитанных данных
+             */
+            std::vector<ItemType *> load()
+            {
+                return std::vector<ItemType *>();
+            }
         };
 
+        /**
+         * @brief Базовая реализация менеджера ресурсов мира
+         *
+         * @tparam KeyType Тип ключа
+         * @tparam ItemType Тип элемента
+         */
         template<class KeyType, class ItemType>
         class ManagerImpl
         {
@@ -21,6 +41,9 @@ namespace Zen
             unsigned int _maxCount;
             bool _firstTime = true;
         protected:
+            /**
+             * @brief Читистить оставив только заданное кол-во эелементов в памяти
+             */
             void cleanup()
             {
                 if (_cache.size() > _maxCount)
@@ -62,12 +85,22 @@ namespace Zen
             }
         public:
 
+            /**
+             * @brief Содержит ли элемент м заданным ключом
+             *
+             * @param key Ключ элемента
+             */
             inline bool contains(KeyType key) const
             {
                 auto it = _cache.find(key);
                 return it != _cache.end();
             }
 
+            /**
+             * @brief Получить элемент с заданным ключом
+             *
+             * @param key Ключ элемента
+             */
             ItemType *get(KeyType key)
             {
                 if (contains(key))
@@ -78,6 +111,12 @@ namespace Zen
                 return nullptr;
             }
 
+            /**
+             * @brief Установить элемент в заданный ключ
+             *
+             * @param key Ключ
+             * @param val Элемент
+             */
             void set(KeyType key, ItemType *val)
             {
                 _cache[key] = val;
@@ -92,6 +131,9 @@ namespace Zen
                 cleanup();
             }
 
+            /**
+             * @brief Получить все ИД элементов
+             */
             std::vector<KeyType> getAllIds()
             {
                 std::vector<KeyType> res;
@@ -102,14 +144,9 @@ namespace Zen
                 return res;
             }
 
-            virtual ~ManagerImpl()
-            {
-                for (auto && i : _cache)
-                {
-                    delete i.second;
-                }
-            }
-
+            /**
+             * @brief Получить все эелементы
+             */
             std::vector<ItemType *> getAll()
             {
                 std::vector<ItemType *> res;
@@ -118,6 +155,14 @@ namespace Zen
                     res.push_back(it.second);
                 }
                 return res;
+            }
+
+            virtual ~ManagerImpl()
+            {
+                for (auto && i : _cache)
+                {
+                    delete i.second;
+                }
             }
         protected:
             std::vector<ItemType *> loadItems()
@@ -149,18 +194,22 @@ namespace Zen
             }
         };
 
-
+        /**
+         * @brief Сокращение шаблона для ManagerImpl (как ключ использует IdType)
+         * 
+         * @tparam ItemType Тип элемента
+         */
         template<class ItemType>
         class Manager : public ManagerImpl<IdType, ItemType>
         {
         protected:
             Manager(int max) : ManagerImpl<IdType, ItemType>(10) {};
             Manager() : Manager(10) {};
-            
+
         public:
-            static Manager<ItemType>* instance()
+            static Manager<ItemType> *instance()
             {
-                static Manager<ItemType>* inst = new Manager<ItemType>();
+                static Manager<ItemType> *inst = new Manager<ItemType>();
                 return inst;
             }
         };

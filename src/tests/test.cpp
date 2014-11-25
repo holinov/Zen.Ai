@@ -7,6 +7,7 @@
 /********************************
  * Главный файл тестов	Zen.AI	*
  ********************************/
+#include "unit_tests/managers_tests.cpp"
 #include "unit_tests/action_tests.cpp"
 #include "unit_tests/wish_tests.cpp"
 #include "unit_tests/world_tests.cpp"

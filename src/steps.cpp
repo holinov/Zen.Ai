@@ -131,7 +131,7 @@ namespace Zen
                 std::string stat = _stat;
                 int change = _change;
                 if (_useContext) change = stepCtx->ammount;
-                
+
                 uint old = ctx->actorInfo().actor()->stat(stat);
 #warning продумать контекст изменения статов
                 ctx->actorInfo().actor()->stat(stat, old + change);

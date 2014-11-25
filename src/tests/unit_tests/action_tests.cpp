@@ -21,22 +21,11 @@ public:
         : Action(id, name, cost, {{0,100},{1,30}})
     {}
 
-    /**
-     * Когда перегруженно в дочерних класах дает возможность повлиять на контекст событий
-     *
-     * @param ctx Контекст действий
-     */
     virtual bool applyToContext(Context *ctx)
     {
         return true;
     };
 
-    /**
-     * @brief Когда перегруженно в дочерних классах определяет возможность исполнения действия
-     *
-     * @param ctx Контекст действий
-     * @return true если применимо к текущему контексту
-     */
     virtual bool isApplyable(Context *ctx)
     {
         return true;
