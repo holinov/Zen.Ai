@@ -1,11 +1,13 @@
 #pragma once
 #include "stdafx.h"
-#include "character.h"
-#include "world.h"
+//#include "character.h"
+//#include "world.h"
 
 namespace Zen{
 	namespace AI{
 
+		class Character;
+		class Location;
 		/**
 		 * @brief Данные о главном действущем лице
 		 */

@@ -10,3 +10,4 @@
 #include "unit_tests/action_tests.cpp"
 #include "unit_tests/wish_tests.cpp"
 #include "unit_tests/world_tests.cpp"
+#include "unit_tests/skill_tests.cpp"

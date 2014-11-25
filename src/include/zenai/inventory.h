@@ -34,7 +34,7 @@ namespace Zen
 
             /**
              * @brief Кол-во заданного ресурса
-             * 
+             *
              * @param id ИД типа ресурса
              */
             uint resAmmount(IdType id)
@@ -181,6 +181,18 @@ namespace Zen
 
                 return has;
             }
+
+            InventoryItem &operator[](IdType idx)
+            {
+                return _items[idx];
+            };
+
+            const InventoryItem &operator[](IdType idx) const
+            {
+                // either actual access, or reuse non-const overload
+                // for example, as follows:
+                return const_cast<Inventory&>(*this)[idx];
+            };
 
             /**
              * @brief Получить ресурсы нужного типа

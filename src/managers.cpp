@@ -24,7 +24,7 @@ namespace Zen
             set(i, w2);
         }*/
 
-        void ActionManager::LoadActions()
+        /*oid ActionManager::LoadActions()
         {
             IdType i = 0;
 
@@ -36,7 +36,7 @@ namespace Zen
 
             a2=new Steps::RestAction();
             set(a2->id(),a2);
-        }
+        }*/
 
     }
 }

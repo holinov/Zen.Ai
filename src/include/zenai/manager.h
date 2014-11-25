@@ -63,7 +63,9 @@ namespace Zen
                 : _cache()
                 , _counts()
                 , _maxCount(max)
-        	{};
+        	{
+                LoadActions();
+            };
 
         	Manager() : Manager(10) {};
 
@@ -121,7 +123,7 @@ namespace Zen
                 return res;
             }
         
-            virtual void LoadActions()
+            void LoadActions()
             {
             	for(auto&& i : loadItems()) {
             		set(i->id(),i);

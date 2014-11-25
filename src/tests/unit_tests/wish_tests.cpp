@@ -44,10 +44,12 @@ TEST_F(WishTest, WishInfo_Constructor)
     WishInfo wi1 = WishInfo(_id,_lvl);
     ASSERT_EQ(_id, wi1.wishId());
     ASSERT_EQ(_lvl, wi1.wishLvl());
+    ASSERT_EQ(0, wi1.history().size());
 
     WishInfo wi2 = WishInfo(_wish,_lvl);
     ASSERT_EQ(_wish->id(), wi1.wishId());
     ASSERT_EQ(_lvl, wi1.wishLvl());
+    ASSERT_EQ(0, wi1.history().size());
 
 }
 

@@ -1,12 +1,13 @@
 #pragma once
 #include "stdafx.h"
-#include "context.h"
 #include "action.h"
 
 namespace Zen
 {
     namespace AI
     {
+        class Resource;
+
         namespace Steps
         {
 
@@ -80,18 +81,18 @@ namespace Zen
                     , _steps()
                 {};
 
-                virtual ~StepsAction()
+                ~StepsAction()
                 {
                     for (auto && s : _steps)
                     {
                         delete s;
                     }
                 }
-                virtual bool applyToContext(Context *ctx);
-                virtual bool isApplyable(Context *ctx);
+                bool applyToContext(Context *ctx);
+                bool isApplyable(Context *ctx);
             };
 
-            
+
         }
     }
 }

@@ -1,8 +1,8 @@
 #pragma once
 #include "stdafx.h"
-#include "inventory.h"
+//#include "inventory.h"
 #include "skill.h"
-#include "addiction.h"
+//#include "addiction.h"
 
 namespace Zen
 {
@@ -10,8 +10,31 @@ namespace Zen
     {
         class WishInfo;
         class AddictionInfo;
-        class Skill;
+        class SkillInfo;
+
+        class SkillResult;
         class Context;
+        class Inventory;
+
+        class SkillHistoryManager
+        {
+        private:
+            std::vector<SkillResult> _history;
+        public:
+            SkillHistoryManager()
+                : _history()
+            {};
+
+            void add(const SkillResult &res)
+            {
+                _history.push_back(res);
+            }
+
+            std::vector<SkillResult> get()
+            {
+                return _history;
+            }
+        };
 
         /**
          * @brief Существо
@@ -91,15 +114,16 @@ namespace Zen
         private:
             std::map<IdType, WishInfo> _wishes;
             std::map<IdType, AddictionInfo> _addictions;
-            std::map<IdType, Skill> _skills;
+            std::map<IdType, SkillInfo> _skills;
             std::map<std::string, int> _stats;
+            SkillHistoryManager *_history;
             Inventory *_Inventory;
 
         public:
 
             /**
              * @brief Выполнить следующее действие (в зависимости от желаний существа)
-             * 
+             *
              * @param ctx Контекст действий
              */
             void makeAction(Context *ctx);
@@ -117,29 +141,9 @@ namespace Zen
              */
             Stats Stats;
 
-            Character()
-                : Stats()
-                , _wishes()
-                , _addictions()
-                , _skills()
-                , _stats({  {Stats::Social::Attractivnes, 100}
-                , {Stats::Social::Influence, 100}
-                , {Stats::Survival::Energy, 100}
-                , {Stats::Survival::Food, 100}
-                , {Stats::Survival::Water, 100}
-                , {Stats::Common::TotalExp, 0}
-                , {Stats::Common::Happines, 100}
-                , {Stats::Common::Wealth, 0}
-            })
-            {
-                id(++curId);
-                _Inventory = new Inventory();
-            };
+            Character();
 
-            ~Character()
-            {
-                delete _Inventory;
-            }
+            ~Character();
 
             /**
              * @brief Изменить уровень желания
@@ -147,14 +151,7 @@ namespace Zen
              * @param wishId ИД изменяемого желания
              * @param modifyLvl Уровень изменения желания
              */
-            inline void modifyWish(IdType wishId, int modifyLvl)
-            {
-                auto it = _wishes.find(wishId);
-                if (it == _wishes.end())
-                    _wishes[wishId] = WishInfo(wishId, 0);
-
-                _wishes[wishId].addWishLvl(modifyLvl);
-            }
+            void modifyWish(IdType wishId, int modifyLvl);
 
             /**
              * @brief Инвентарь персонажа
@@ -166,7 +163,7 @@ namespace Zen
 
             /**
              * @brief Характеристика персонажа
-             * 
+             *
              * @param stat Название характеристики
              */
             int stat(std::string stat)
@@ -176,7 +173,7 @@ namespace Zen
 
             /**
              * @brief Задать характеристику персонажа
-             * 
+             *
              * @param stat Название характеристики
              * @param val Новое значение
              */
@@ -185,7 +182,7 @@ namespace Zen
                 _stats[stat] = val;
             }
 
-            std::vector<WishInfo> wishes()
+            std::vector<WishInfo> wishes();/*
             {
                 std::vector<WishInfo> res;
                 for (auto && i : _wishes)
@@ -193,32 +190,60 @@ namespace Zen
                     res.push_back(i.second);
                 }
                 return res;
-            }
+            }*/
 
             /**
              * @brief Список склонностей персонажа
              */
-            std::vector<AddictionInfo> addictions(){
-            	 std::vector<AddictionInfo> res;
-            	 for(auto&& i : _addictions) {
-            	 	res.push_back(i.second);
-            	 }
-            	 return res;
-            }
+            std::vector<AddictionInfo> addictions();/*
+            {
+                std::vector<AddictionInfo> res;
+                for (auto && i : _addictions)
+                {
+                    res.push_back(i.second);
+                }
+                return res;
+            }*/
 
             /**
              * @brief Задать новый список склонностей персонажа
-             * 
+             *
              * @param adds Новый список зависимостей
-             */            
-            void addictions(std::vector<AddictionInfo> adds)
+             */
+            void addictions(std::vector<AddictionInfo> adds);/*
             {
                 for (auto && a : adds)
                 {
                     _addictions[a.wishId()] = a;
-                    modifyWish(a.wishId(),0);
+                    modifyWish(a.wishId(), 0);
                 }
+            }*/
+
+            void addWishHistory(const SkillResult& sr);/*{
+                _history->add(sr);
+                for(auto&& wish : sr.affectedWishes()) {
+                    _wishes[wish.first].addHistroy(sr);
+                }
+            }*/
+
+            const SkillHistoryManager *history() const
+            {
+                return _history;
             }
+
+            const std::map<IdType, SkillInfo> skills() const
+            {
+                return _skills;
+            }
+
+            SkillInfo* skill(IdType skillId);/*
+            {
+                auto it = _skills.find(skillId);
+                if(it == _skills.end()){
+                    _skills[skillId] = SkillInfo(skillId, 0);
+                }
+                return &_skills[skillId];
+            }*/
         };
     }
 }

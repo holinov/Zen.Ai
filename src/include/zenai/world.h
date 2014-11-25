@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "character.h"
 #include "managers.h"
+#include "inventory.h"
 
 namespace Zen{
 	namespace AI{

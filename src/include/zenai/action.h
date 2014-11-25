@@ -57,17 +57,14 @@ namespace Zen{
             /**
              * @brief Стоимость действия
              */
-            inline const int cost()
+            inline const int cost() const
             {
                 return _actionCost;
             }
 
-            /**
-             * Когда перегруженно в дочерних класах дает возможность повлиять на контекст событий
-             *
-             * @param ctx Контекст действий
-             */
-            virtual bool applyToContext(Context *ctx) = 0;
+            inline const std::map<IdType, int> affectedWishes() const{
+                return _affectedWishes;
+            }
 
             /**
              * @brief Применить результаты действия
@@ -76,6 +73,13 @@ namespace Zen{
              * @param skillLvl Уровень умения с которым выполняется дейтвие
              */
             std::vector<ActionResult> applyResults(Context *ctx, int skillLvl);
+
+            /**
+             * Когда перегруженно в дочерних класах дает возможность повлиять на контекст событий
+             *
+             * @param ctx Контекст действий
+             */
+            virtual bool applyToContext(Context *ctx) = 0;
 
             /**
              * @brief Когда перегруженно в дочерних классах определяет возможность исполнения действия

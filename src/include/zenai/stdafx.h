@@ -19,9 +19,9 @@ private:
 	IdType _id;
 public:
 	HasId() {};
-	HasId(IdType id): _id(id) {};
-	inline IdType id() { return _id; }
-	inline void id(IdType id) { _id=id; }
+	HasId(const IdType id): _id(id) {};
+	inline const IdType id() const { return _id; }
+	inline void id(const IdType id) { _id=id; }
 };
 
 class HasName {
@@ -30,6 +30,6 @@ private:
 public:
 	HasName() {};
 	HasName(std::string name): _name(name) {};
-	inline std::string name() { return _name; }
-	inline void name(std::string name) { _name=name; }
+	inline const std::string name() const { return _name; }
+	inline void name(const std::string name) { _name=name; }
 };

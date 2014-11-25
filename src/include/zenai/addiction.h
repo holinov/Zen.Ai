@@ -46,7 +46,7 @@ namespace Zen{
 			/**
 			 * @brief ИД желания склонности
 			 */
-			inline void wishId(IdType id) { _wishId=id; }
+			inline void wishId(const IdType id) { _wishId=id; }
 
 			/**
 			 * @brief Силя влияния на желание
@@ -56,7 +56,7 @@ namespace Zen{
 			/**
 			 * @brief Силя влияния на желание
 			 */
-			inline void wishLvl(int lvl){ _wishLevel = lvl; }			
+			inline void wishLvl(const int lvl){ _wishLevel = lvl; }			
 		};
 	}
 }

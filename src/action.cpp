@@ -1,5 +1,6 @@
 #include <zenai/action.h>
 #include <zenai/context.h>
+#include <zenai/character.h>
 
 std::vector<Zen::AI::ActionResult> Zen::AI::Action::applyResults(Context *ctx, int skillLvl)
 {
