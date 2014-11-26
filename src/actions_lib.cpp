@@ -20,7 +20,7 @@ namespace Zen
                 _steps.push_back(new ChangeStatStep(Character::Stats::Survival::Water));
             }
 
-            CollectFoodAction::CollectFoodAction() : StepsAction(1, "Collect food", 2, {{0, 10}})
+            CollectFoodAction::CollectFoodAction() : StepsAction(1, "Collect food", 2, {{0, 1}})
             {
                 _steps.push_back(new FindBestResourceOfTypeStep(ResourceTypes::FOOD));
                 _steps.push_back(new LootStep());

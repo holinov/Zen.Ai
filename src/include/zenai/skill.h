@@ -17,6 +17,17 @@ namespace Zen
          */
         struct SkillResult
         {
+            SkillResult()
+                : SkillId()
+                , Results()
+            {}
+
+            SkillResult(const SkillResult &o)
+            : SkillId(o.SkillId)
+            , Results(o.Results)
+            {}
+
+
             /**
              * ИД Умения
              */
@@ -57,13 +68,13 @@ namespace Zen
             bool applySkill(Context *ctx);
             virtual std::map<IdType, int> getAffectedWishes() = 0;
             virtual ~Skill() {}
+            virtual std::vector<ActionResult> applyToContext(Context *ctx, int lvl) = 0;
 
         protected:
             Skill(IdType id, std::string name)
                 : HasId(id)
                 , HasName(name)
             {};
-            virtual std::vector<ActionResult> applyToContext(Context *ctx, int lvl) = 0;
         };
 
         /**
@@ -97,10 +108,42 @@ namespace Zen
         private:
             std::vector<Skill *> _skills;
         public:
-            CompositeSkill(IdType id, std::string name)
+            CompositeSkill(IdType id, std::string name, std::vector<Skill *> skills)
                 : Skill(id, name)
-                , _skills()
+                , _skills(skills)
             {}
+
+            virtual std::map<IdType, int> getAffectedWishes()
+            {
+                std::map<IdType, int> summary;
+                for (auto && skill : _skills)
+                {
+                    std::map<IdType, int> inner = skill->getAffectedWishes();
+                    for (auto && wish : inner)
+                    {
+                        if (summary.find(wish.first) == summary.end())
+                        {
+                            summary[wish.first] = 0;
+                        }
+                        summary[wish.first] += wish.second;
+                    }
+                }
+                return summary;
+            }
+
+        protected:
+            virtual std::vector<ActionResult> applyToContext(Context *ctx, int lvl)
+            {
+                std::vector<ActionResult> results;
+                for (auto && skill : _skills)
+                {
+                    for (auto && res : skill->applyToContext(ctx, lvl))
+                    {
+                        results.push_back(res);
+                    }
+                }
+                return results;
+            };
         };
 
         /**

@@ -21,7 +21,7 @@ namespace Zen
             //Получаем текущий уровень умения
             SkillInfo *skillInfo = actor->skill(id());
             std::vector<ActionResult> results = applyToContext(ctx, skillInfo->skillLvl());
-
+            
             //Записываем историю
             sr.SkillId = id();
             sr.Results = results;

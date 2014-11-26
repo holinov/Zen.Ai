@@ -157,6 +157,10 @@ namespace Zen
                 return res;
             }
 
+            uint count() const{
+                return _cache.size();
+            }
+
             virtual ~ManagerImpl()
             {
                 for (auto && i : _cache)
@@ -204,7 +208,7 @@ namespace Zen
         {
         protected:
             Manager(int max) : ManagerImpl<IdType, ItemType>(10) {};
-            Manager() : Manager(10) {};
+            Manager() : Manager(100) {};
 
         public:
             static Manager<ItemType> *instance()

@@ -20,6 +20,7 @@ namespace Zen
         {
         private:
             std::vector<SkillResult> _history;
+            static const uint MAX_SIZE = 100;
         public:
             SkillHistoryManager()
                 : _history()
@@ -28,9 +29,15 @@ namespace Zen
             void add(const SkillResult &res)
             {
                 _history.push_back(res);
+                int dif = _history.size() - MAX_SIZE;
+                if (dif > 0)
+                {
+                    _history.erase(_history.begin(), _history.begin() + dif);
+                }
             }
 
-            uint const count() const{
+            uint const count() const
+            {
                 return _history.size();
             }
 
@@ -193,9 +200,9 @@ namespace Zen
              */
             void addictions(std::vector<AddictionInfo> adds);
 
-            void addWishHistory(const SkillResult& sr);
+            void addWishHistory(SkillResult sr);
 
-            const SkillHistoryManager *history() const
+            SkillHistoryManager *history() const
             {
                 return _history;
             }
@@ -205,9 +212,9 @@ namespace Zen
                 return _skills;
             }
 
-            void addSkill(Skill* skill);
+            void addSkill(Skill *skill);
 
-            SkillInfo* skill(IdType skillId);
+            SkillInfo *skill(IdType skillId);
         };
     }
 }

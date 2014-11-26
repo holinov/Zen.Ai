@@ -140,7 +140,7 @@ namespace Zen
             }
         }
 
-        void Character::addWishHistory(const SkillResult &sr)
+        void Character::addWishHistory(SkillResult sr)
         {
             _history->add(sr);
             for (auto && wish : sr.affectedWishes())

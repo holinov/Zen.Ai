@@ -13,8 +13,8 @@ using namespace Zen::AI;
 class SkillTest : public ::testing::Test
 {
 protected:
-    Manager<Skill>* smgr;
-    Manager<Action>* amgr;
+    Manager<Skill> *smgr;
+    Manager<Action> *amgr;
 
     SkillTest()
     {
@@ -52,8 +52,8 @@ TEST_F(SkillTest, SkillApply)
     CharGenerator gen;
     World *w = new World();
     Character *ch = gen.generate();
-    Location *loc = new Location(0,0,w);
-    Context *ctx = new Context(ch,loc);
+    Location *loc = new Location(0, 0, w);
+    Context *ctx = new Context(ch, loc);
 
     //Добавить ресурс на локацию
     loc->inventory()->add(new Food(), 10);
@@ -83,13 +83,43 @@ TEST_F(SkillTest, SkillApply)
  ********************************/
 TEST_F(SkillTest, SkillLvlUp)
 {
-    EXPECT_TRUE(false) << "Написать тесты для умений";
+    ADD_FAILURE() << "Написать тесты для умений";
 }
 
 /********************************
- *  Проверка исполнения составных умений
+ *  Проверка создания и исполнения составных умений
  ********************************/
-TEST_F(SkillTest, CompositeSkillApply)
+TEST_F(SkillTest, CompositeSkill)
 {
-    EXPECT_TRUE(false) << "Написать тесты для умений";
+    CompositeSkillManager mgr;
+    CharGenerator gen;
+    World *w = new World();
+    Character *ch = gen.generate();
+    Location *loc = new Location(0, 0, w);
+    Context *ctx = new Context(ch, loc);
+
+    //Добавить ресурс на локацию
+    loc->inventory()->add(new Food(), 10);
+
+    // Наполнить историю событий
+    Skill *s = smgr->getAll()[2];   // Rest x2
+    s->applySkill(ctx);
+    s->applySkill(ctx);
+
+    s = smgr->getAll()[0];          // Eat Raw
+    s->applySkill(ctx);
+
+    // Попробовать создать композитный скилл для желания 0 (покушать)
+    CompositeSkill *cskill = mgr.findCompositeInHistory(0, ch->history());
+
+    //Проверить что такой скилл найден
+    ASSERT_NE(nullptr, cskill);
+
+    // Попробовать создать композитный скилл для не существующего желания
+    CompositeSkill *cskill1 = mgr.findCompositeInHistory(100500, ch->history());
+
+    //Проверить что такой скилл НЕ найден
+    ASSERT_EQ(nullptr, cskill1);
+
+    ADD_FAILURE() << "Сделать тестирование исполнения";
 }
